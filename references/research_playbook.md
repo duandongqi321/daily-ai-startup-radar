@@ -63,6 +63,16 @@ customer:
 business_model:
 founder_team_signal:
 traction_signal:
+scoring_evidence:
+  freshness:
+  ai_centrality:
+  customer_pain:
+  business_model:
+  founder_team_fit:
+  traction_distribution:
+  defensibility:
+  market_timing:
+  personal_lens_fit:
 source_links:
 notes:
 ```
@@ -86,6 +96,7 @@ Prefer candidates with:
 - A clear user or buyer
 - A product wedge that teaches something
 - Personal Lens relevance
+- Enough evidence to score at the dimension level
 - Regional diversity across the four target markets
 
 Reject or down-rank:

@@ -1,4 +1,5 @@
 .DS_Store
+.Rhistory
 
 # Local user configuration. Keep personal lens details private by default.
 config/user_profile.yaml
@@ -13,6 +14,8 @@ config/*.secret.yaml
 # Build/package artifacts
 *.zip
 *.tar.gz
+daily-ai-startup-radar-*.html
+briefings/
 
 # Logs and temporary files
 *.log

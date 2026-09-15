@@ -1,8 +1,8 @@
-# Daily AI Startup Radar V0 Spec
+# Daily AI Startup Radar V0.2 Spec
 
 ## One-Line Goal
 
-Help a user turn daily AI startup noise into a small, evidence-backed, personally relevant startup radar.
+Help a user turn daily AI startup noise into a low-friction, evidence-backed, personally relevant HTML startup radar.
 
 ## User Job
 
@@ -13,8 +13,8 @@ The user wants to know which recent AI startup signals are worth attention, what
 - Track recent AI-related startup signals across Silicon Valley, New York, Singapore, and Hong Kong.
 - Explain each selected company in beginner-friendly language.
 - Analyze company type, business, customer, founder/team, strength, potential, risk, and Personal Lens.
-- Score companies with a transparent rubric.
-- Produce a daily briefing that can be read in chat or reformatted for push channels.
+- Score companies with a transparent, quantified rubric and visible dimension breakdown.
+- Produce a daily HTML briefing that can be scanned quickly, opened as a standalone file, or reformatted for push channels.
 - Run compact onboarding when no user profile exists.
 
 ## Non-Goals
@@ -31,7 +31,7 @@ The user wants to know which recent AI startup signals are worth attention, what
 - Target regions and weights.
 - Sector interests.
 - Recency window.
-- Output language and format preference.
+- Output language, HTML format preference, and delivery style.
 - Available research tools and delivery integrations.
 
 ## Candidate Signals
@@ -51,14 +51,28 @@ Good startup signals include:
 
 A normal daily briefing should include:
 
-1. Header with date, timezone, regions, and research window
-2. Executive snapshot
-3. Top radar picks table
-4. Company deep dives
-5. Patterns observed across regions or sectors
-6. Personal Lens takeaways
-7. Watchlist and next questions
-8. Sources and confidence notes
+1. Self-contained HTML document with inline CSS
+2. Header with date, timezone, regions, research window, and profile
+3. First-screen executive snapshot for a 30-second read
+4. Ranked top picks with score, rating band, confidence, and risk tags
+5. Company cards with quantified score breakdowns
+6. Expandable deep-dive sections for business, founder/team, strengths, potential, risks, Personal Lens, and sources
+7. Cross-market patterns and Personal Lens takeaways
+8. Watchlist, next questions, sources, and confidence notes
+
+## Quantified Scoring
+
+Every included company must show:
+
+- Total score out of 100
+- Rating band
+- Confidence grade
+- Dimension-level scores
+- Top scoring drivers
+- Main score deductions
+- Evidence gaps or source limitations
+
+The scoring dimensions are defined in `references/scoring_rubric.md`.
 
 ## Personal Lens Model
 
@@ -84,9 +98,10 @@ Example lens questions:
 
 - The user can upload the folder as a Skill package.
 - The Skill can onboard a new user without needing a long back-and-forth.
-- A daily briefing can be produced from current sources with clear citations.
+- A daily HTML briefing can be produced from current sources with clear citations.
 - The output feels useful to a beginner but still sharp enough for founder thinking.
 - The Personal Lens changes the analysis, instead of being a generic final paragraph.
+- The score is explainable at the dimension level, not just a single number.
 
 ## V1 Ideas
 

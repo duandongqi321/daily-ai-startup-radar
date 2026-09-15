@@ -1,17 +1,17 @@
 # Daily AI Startup Radar
 
-Daily AI Startup Radar is an open-source ChatGPT Skill for generating personalized AI startup intelligence briefings.
+Daily AI Startup Radar is an open-source ChatGPT Skill for generating personalized AI startup intelligence briefings as low-friction HTML reports.
 
-It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens.
+It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens and quantified scorecard.
 
 ## What It Does
 
 - Finds recent AI startup signals from target regions
 - Explains what each company does in plain language
 - Analyzes company type, business model, customer, team signal, strengths, potential, and risks
-- Scores companies with a transparent rubric
+- Scores companies with a quantified rubric and dimension-level evidence
 - Adds a configurable Personal Lens for founder, operator, investor, career, or market-entry use cases
-- Produces a briefing that can be used in ChatGPT or adapted for Lark, WhatsApp, SMS, and other delivery channels
+- Produces a self-contained HTML briefing that can be read quickly or adapted for Lark, WhatsApp, SMS, and other delivery channels
 
 ## Who It Is For
 
@@ -27,10 +27,10 @@ It tracks recent AI startup signals across Silicon Valley, New York, Singapore, 
 1. Download this repository or the release zip.
 2. Upload the Skill folder or zip file to ChatGPT Skills.
 3. Start with onboarding so ChatGPT can generate your Personal Lens profile.
-4. Run the briefing with a prompt like:
+4. Run the HTML briefing with a prompt like:
 
 ```text
-Use $daily-ai-startup-radar to create today's Daily AI Startup Radar for me.
+Use $daily-ai-startup-radar to create today's HTML Daily AI Startup Radar for me.
 ```
 
 You can also ask for onboarding first:
@@ -57,6 +57,18 @@ The Personal Lens controls:
 - Opportunity style
 - Ideas or risks to avoid
 - Preferred language, timezone, briefing depth, and delivery style
+
+## Output Experience
+
+The default briefing is a single HTML file designed for fast reading:
+
+- Top summary for a 30-second scan
+- Ranked company cards
+- Total score, rating band, and confidence for each company
+- Dimension-level scoring breakdown
+- Risk tags and key deductions
+- Expandable details for deeper reading
+- Source links and evidence notes
 
 ## Repository Structure
 
@@ -88,6 +100,7 @@ daily-ai-startup-radar/
 - Regions: Silicon Valley, New York, Singapore, and Hong Kong
 - Research window: last 24 hours by default; expands to 72 hours after weekends or when signals are sparse
 - Company count: 5-7 companies per standard briefing
+- Output format: self-contained HTML
 - Language: configurable by user profile
 - Focus: startup ideas, product patterns, business models, risks, and localization opportunities
 

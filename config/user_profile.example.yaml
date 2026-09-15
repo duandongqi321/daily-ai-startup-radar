@@ -1,4 +1,4 @@
-version: "0.1.0"
+version: "0.2.0"
 profile_name: "apac-founder-default"
 language: "zh-CN"
 timezone: "Asia/Hong_Kong"
@@ -10,6 +10,8 @@ briefing:
   fallback_recency_window_hours: 72
   max_companies: 6
   min_sources_per_company: 1
+  output_format: "html"
+  output_style: "low_friction_html_briefing"
   preferred_depth: "standard"
 
 target_regions:
@@ -74,7 +76,7 @@ scoring_preferences:
 delivery:
   chatgpt:
     enabled: true
-    format: "full_briefing"
+    format: "html_briefing"
   lark:
     enabled: false
     format: "compact_markdown"
