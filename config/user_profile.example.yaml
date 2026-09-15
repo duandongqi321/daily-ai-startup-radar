@@ -1,0 +1,87 @@
+version: "0.1.0"
+profile_name: "apac-founder-default"
+language: "zh-CN"
+timezone: "Asia/Hong_Kong"
+
+briefing:
+  cadence: "daily"
+  preferred_delivery_time: "08:00"
+  recency_window_hours: 24
+  fallback_recency_window_hours: 72
+  max_companies: 6
+  min_sources_per_company: 1
+  preferred_depth: "standard"
+
+target_regions:
+  - name: "Silicon Valley"
+    weight: "high"
+    purpose: "Use as the frontier signal for product, AI infrastructure, agents, and venture-backed startup patterns."
+  - name: "New York"
+    weight: "medium"
+    purpose: "Use for finance, B2B, enterprise AI, media, legal, and professional services workflows."
+  - name: "Singapore"
+    weight: "high"
+    purpose: "Use for Southeast Asia, APAC expansion, fintech, logistics, health, and government-linked innovation."
+  - name: "Hong Kong"
+    weight: "high"
+    purpose: "Use for local APAC founder opportunities, finance, cross-border business, health, consumer, and policy-adjacent signals."
+
+personal_lens:
+  user_type:
+    - "aspiring founder"
+    - "startup learner"
+  background_summary: "Interested in AI startups, vertical AI, APAC opportunities, and practical founder learning."
+  goals:
+    - "Find startup ideas"
+    - "Learn AI product patterns"
+    - "Identify localization opportunities for APAC markets"
+    - "Train startup judgment"
+  watch_sectors:
+    - "Vertical AI"
+    - "AI agents"
+    - "AI tools and skills"
+    - "Healthcare and wellness"
+    - "Finance and professional services"
+    - "Career and recruiting"
+    - "SMB workflow automation"
+  opportunity_preferences:
+    - "Niche product that can be tested quickly"
+    - "Clear pain point and buyer"
+    - "Can start as service, workflow, or lightweight software"
+    - "Has Hong Kong, Singapore, or broader APAC adaptation potential"
+  avoid:
+    - "Heavy regulation without a clear wedge"
+    - "Capital-intensive hardware-first ideas unless the insight is transferable"
+    - "Pure hype with weak customer evidence"
+  risk_appetite: "medium"
+  personal_lens_questions:
+    - "What can I learn from this company's product wedge?"
+    - "Could a smaller or localized version work in Hong Kong, Singapore, or APAC?"
+    - "What customer pain is real enough to test?"
+    - "What would I need to know before copying this pattern?"
+
+scoring_preferences:
+  prioritize:
+    - "Personal relevance"
+    - "Clarity of customer pain"
+    - "Recent credible signal"
+    - "Market timing"
+  deprioritize:
+    - "Funding news with no product insight"
+    - "Generic AI wrappers"
+    - "Companies with unclear buyer or workflow"
+
+delivery:
+  chatgpt:
+    enabled: true
+    format: "full_briefing"
+  lark:
+    enabled: false
+    format: "compact_markdown"
+    webhook_env_var: "LARK_WEBHOOK_URL"
+  whatsapp:
+    enabled: false
+    format: "short_digest"
+  sms:
+    enabled: false
+    format: "top_3_alert"

@@ -1,0 +1,21 @@
+.DS_Store
+
+# Local user configuration. Keep personal lens details private by default.
+config/user_profile.yaml
+config/*.local.yaml
+config/*.secret.yaml
+
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Build/package artifacts
+*.zip
+*.tar.gz
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+.cache/
