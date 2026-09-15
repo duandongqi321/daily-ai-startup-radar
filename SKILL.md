@@ -13,7 +13,7 @@ This skill produces research-backed intelligence, not investment, legal, tax, or
 
 ## Core Workflow
 
-1. Establish the run context: briefing date, timezone, output language, recency window, target regions, and the user's profile. Default to Chinese output and the four target regions of Silicon Valley, New York, Singapore, and Hong Kong unless the user requests otherwise.
+1. Establish the run context: briefing date, timezone, output language, recency window, target regions, and the user's profile. If `config/user_profile.yaml` exists, use it as the user's local Personal Lens unless the user provides a different profile. Default to Chinese output and the four target regions of Silicon Valley, New York, Singapore, and Hong Kong unless the user requests otherwise.
 2. If no usable profile is available, read [references/onboarding.md](references/onboarding.md) and run the compact onboarding. If the user wants to skip setup, use the V0 default profile in [config/user_profile.example.yaml](config/user_profile.example.yaml) and label it as a default.
 3. For a real daily briefing, browse or otherwise verify current sources. Read [references/research_playbook.md](references/research_playbook.md) before collecting signals.
 4. Build a candidate list of recent AI-related startup signals, dedupe names, and prefer startups where AI is core to the product or workflow.
