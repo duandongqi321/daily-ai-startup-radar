@@ -1,10 +1,8 @@
 # Daily AI Startup Radar
 
-Daily AI Startup Radar is an open-source ChatGPT Skill for generating a personalized daily AI startup intelligence briefing.
+Daily AI Startup Radar is an open-source ChatGPT Skill for generating personalized AI startup intelligence briefings.
 
-It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language with a configurable Personal Lens.
-
-中文简介：这是一个 V0 版 ChatGPT Skill，用来每天生成个性化 AI 创业情报简报，帮助用户从 startup 新闻里找到创业灵感、产品模式、风险判断和本地化机会。
+It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens.
 
 ## What It Does
 
@@ -12,16 +10,53 @@ It tracks recent AI startup signals across Silicon Valley, New York, Singapore, 
 - Explains what each company does in plain language
 - Analyzes company type, business model, customer, team signal, strengths, potential, and risks
 - Scores companies with a transparent rubric
-- Adds a configurable Personal Lens for founder, investor, operator, career, or market-entry use cases
-- Produces a daily briefing that can be used in ChatGPT or adapted for Lark, WhatsApp, SMS, and other delivery channels
+- Adds a configurable Personal Lens for founder, operator, investor, career, or market-entry use cases
+- Produces a briefing that can be used in ChatGPT or adapted for Lark, WhatsApp, SMS, and other delivery channels
 
 ## Who It Is For
 
-- 正在找创业方向的人
-- 想学习 AI startup 产品形态的人
-- 想观察融资、产品和市场趋势的人
-- 想把海外模式本地化到 APAC、香港或新加坡的人
-- 想训练自己判断 early-stage startup 能力的人
+- Aspiring founders looking for startup ideas
+- Builders studying AI product patterns
+- Operators tracking startup, funding, and market signals
+- Investors or analysts looking for early AI company signals
+- People exploring how global AI startup models could be localized to APAC markets
+- Anyone who wants to improve their judgment about early-stage AI companies
+
+## How To Use
+
+1. Download this repository or the release zip.
+2. Upload the Skill folder or zip file to ChatGPT Skills.
+3. Start with onboarding so ChatGPT can generate your Personal Lens profile.
+4. Run the briefing with a prompt like:
+
+```text
+Use $daily-ai-startup-radar to create today's Daily AI Startup Radar for me.
+```
+
+You can also ask for onboarding first:
+
+```text
+Use $daily-ai-startup-radar to onboard me and create my Personal Lens profile.
+```
+
+## Configure Your Personal Lens
+
+Copy the example profile and edit it:
+
+```text
+config/user_profile.example.yaml -> config/user_profile.yaml
+```
+
+Do not commit `config/user_profile.yaml` if it contains private preferences, phone numbers, webhook names, or personal context. The repo ignores that file by default.
+
+The Personal Lens controls:
+
+- Your role and background
+- Target regions
+- Sectors of interest
+- Opportunity style
+- Ideas or risks to avoid
+- Preferred language, timezone, briefing depth, and delivery style
 
 ## Repository Structure
 
@@ -48,70 +83,27 @@ daily-ai-startup-radar/
     `-- delivery_channels.md
 ```
 
-## Quick Start
-
-1. 上传这个 Skill 文件夹，或上传生成的 `daily-ai-startup-radar.zip`。
-2. 第一次运行时，让 ChatGPT 使用 onboarding 问题帮你生成个人 profile。
-3. 之后每天使用类似提示：
-
-```text
-Use $daily-ai-startup-radar to create today's Daily AI Startup Radar for me.
-```
-
-中文也可以：
-
-```text
-使用 $daily-ai-startup-radar，按我的 Personal Lens 生成今天的 AI 创业雷达。
-```
-
-## Configure Your Personal Lens
-
-Copy the example profile and edit it:
-
-```text
-config/user_profile.example.yaml -> config/user_profile.yaml
-```
-
-Do not commit `config/user_profile.yaml` if it contains private preferences, phone numbers, webhook names, or personal context. This repo ignores that file by default.
-
-The Personal Lens controls:
-
-- your role and background
-- your target regions
-- your sectors of interest
-- what opportunities you want to find
-- what ideas or risks to avoid
-- your preferred language, timezone, briefing depth, and delivery style
-
 ## V0 Defaults
 
-- 地区：Silicon Valley、New York、Singapore、Hong Kong
-- 时间窗口：默认过去 24 小时；周末后或信号较少时扩展到 72 小时
-- 公司数量：5-7 家
-- 输出语言：默认中文，可按用户语言切换
-- 输出重点：创业启发、产品形态、商业模式、风险、APAC/本地化机会
+- Regions: Silicon Valley, New York, Singapore, and Hong Kong
+- Research window: last 24 hours by default; expands to 72 hours after weekends or when signals are sparse
+- Company count: 5-7 companies per standard briefing
+- Language: configurable by user profile
+- Focus: startup ideas, product patterns, business models, risks, and localization opportunities
 
 ## Delivery Notes
 
-这个 Skill 本身负责研究、筛选、分析和生成简报。要自动推送到 Lark、WhatsApp、短信或手机通知，还需要外部调度器、ChatGPT scheduled task、webhook、API token 或对应连接器。
+This Skill creates the research workflow and briefing. Automatic delivery to Lark, WhatsApp, SMS, or mobile notifications requires an external scheduler, webhook, API token, or connector.
 
-V0 已经包含 `references/delivery_channels.md`，用于指导后续把日报改成适合 Lark、WhatsApp、SMS 或 ChatGPT 通知的格式。
+See `references/delivery_channels.md` for guidance on adapting the briefing format for different delivery channels.
 
-## Current Boundaries
+## Boundaries
 
-- 不会自动发送消息，除非运行环境已经有可用且授权的发送工具。
-- 不会提供投资建议。
-- 如果没有联网研究能力，应该只输出模板、流程或待研究清单，不能假装已经核验了当天信息。
-- 对创始人背景、融资数据和客户案例必须引用来源；来源不足时要标注不确定。
+- The Skill does not send messages automatically unless the runtime has an authorized delivery tool.
+- It does not provide investment, legal, tax, or hiring advice.
+- If current research tools are unavailable, it should produce a template or research plan rather than pretending to verify daily signals.
+- Funding, founder, customer, and traction claims should be cited. Weak evidence should be marked clearly.
 
-## Publish This Skill
+## Contributing
 
-See [docs/PUBLISHING.md](docs/PUBLISHING.md) for step-by-step GitHub publishing instructions.
-
-## ChatGPT Skill Convention
-
-OpenAI Skills use `SKILL.md` as the core instruction file, with optional supporting files in the same Skill folder. This project follows that pattern: the entrypoint stays short, and detailed onboarding, research, scoring, output, and delivery instructions live in `references/`.
-
-## License
-
-MIT License. See [LICENSE](LICENSE).
+Contributions are welcome. Good improvements include better onboarding questions, stronger research instructions, clearer scoring, new user profile examples, and additional delivery templates.
