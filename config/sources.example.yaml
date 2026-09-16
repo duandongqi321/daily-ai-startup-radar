@@ -15,9 +15,12 @@ regions:
   - "Hong Kong"
 
 queries:
-  - '"AI startup" funding'
-  - '"AI agent" startup launch'
-  - '"vertical AI" startup'
+  - '"AI startup" funding OR launch OR partnership'
+  - '"AI agent" startup'
+  - '"vertical AI" company'
+  - '"healthcare AI" startup'
+  - '"career AI" startup'
+  - '"sports AI" startup'
   - '"AI startup" "Singapore"'
   - '"AI startup" "Hong Kong"'
   - '"AI startup" "New York"'
@@ -32,9 +35,12 @@ sources:
     requires_auth: false
     max_results: 20
     queries:
-      - 'AI agent startup created:>=<since-date>'
-      - 'LLM agent language:Python created:>=<since-date>'
-      - 'AI developer tools created:>=<since-date>'
+      - '"AI agent" created:>=<since-date>'
+      - '"LLM agent" created:>=<since-date>'
+      - '"vertical AI" created:>=<since-date>'
+      - '"healthcare AI" created:>=<since-date>'
+      - '"career AI" created:>=<since-date>'
+      - '"sports analytics" AI created:>=<since-date>'
 
   - name: "gdelt"
     enabled: true
@@ -44,8 +50,8 @@ sources:
     requires_auth: false
     max_results: 25
     queries:
-      - '("AI startup" OR "artificial intelligence startup") ("Singapore" OR "Hong Kong" OR "New York" OR "San Francisco")'
-      - '("AI startup" funding OR launch OR partnership)'
+      - '("AI startup" OR "artificial intelligence startup" OR "AI company") ("funding" OR "launch" OR "raised" OR "partnership") ("Singapore" OR "Hong Kong" OR "New York" OR "San Francisco")'
+      - '("AI agent startup" OR "vertical AI startup" OR "healthcare AI startup" OR "sports AI startup" OR "career AI startup")'
 
   - name: "product_hunt"
     enabled: false

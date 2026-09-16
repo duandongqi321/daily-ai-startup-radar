@@ -79,6 +79,10 @@ Candidate fields:
   "business_model": "",
   "founder_team_signal": "",
   "traction_signal": "",
+  "candidate_quality_score": 0,
+  "candidate_quality_reasons": [],
+  "candidate_quality_deductions": [],
+  "source_confidence": "Low/Medium/High",
   "scoring_evidence": {
     "freshness": "",
     "ai_centrality": "",
@@ -113,6 +117,7 @@ Prefer signals that satisfy:
 - within the configured lookback window
 - relevant to at least one target region or globally relevant with a clear region basis
 - AI is central or plausibly central
+- has product, company, launch, funding, customer, traction, or vertical workflow evidence
 - source is credible enough to cite
 - enough evidence exists for dimension-level scoring
 
@@ -120,6 +125,7 @@ Reject or mark Low confidence:
 
 - stale reposts
 - vague listicles
+- templates, starter kits, tutorials, clones, examples, docs mirrors, and case studies that are not current company signals
 - unsupported social-only claims
 - public company news unless it affects a startup signal
 - irrelevant AI mentions

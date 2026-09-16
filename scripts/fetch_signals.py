@@ -169,6 +169,11 @@ def fetch_github(source: dict[str, Any], lookback_hours: int) -> list[dict[str, 
                         "forks": item.get("forks_count"),
                         "language": item.get("language"),
                         "topics": item.get("topics", []),
+                        "owner": ((item.get("owner") or {}).get("login")),
+                        "owner_type": ((item.get("owner") or {}).get("type")),
+                        "created_at": item.get("created_at"),
+                        "updated_at": item.get("updated_at"),
+                        "pushed_at": item.get("pushed_at"),
                     },
                 }
             )
