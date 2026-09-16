@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 - 2026-09-16
+
+- Improved GitHub signal queries for AI agents, vertical AI, healthcare AI, career AI, and sports AI.
+- Added local candidate quality scoring before full briefing analysis.
+- Filtered common false positives such as starter kits, templates, tutorials, clones, hackathons, workshops, docs mirrors, and awesome lists.
+- Fixed GitHub deduplication so separate repositories are no longer collapsed into one `github.com` candidate.
+- Added candidate quality reasons, deductions, source confidence, and provider metadata to normalized signal output.
+
 ## 0.3.0 - 2026-09-16
 
 - Added API-ready source configuration with `config/sources.example.yaml`.
