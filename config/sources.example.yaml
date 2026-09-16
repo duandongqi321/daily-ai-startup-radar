@@ -74,9 +74,11 @@ sources:
     purpose: "Find recent secondary news coverage."
     auth_env: "NEWSAPI_KEY"
     requires_auth: true
+    language: "en"
+    search_in: "title,description"
     max_results: 25
     queries:
-      - '"AI startup" AND (funding OR launch OR partnership)'
+      - '("AI startup" OR "artificial intelligence startup" OR "AI company") AND (funding OR launch OR raised OR partnership OR acquisition OR beta)'
 
   - name: "crunchbase"
     enabled: false

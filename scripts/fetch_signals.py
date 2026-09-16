@@ -233,12 +233,13 @@ def fetch_newsapi(source: dict[str, Any], lookback_hours: int) -> list[dict[str,
             {
                 "q": expand_query(query, lookback_hours),
                 "from": date_since(lookback_hours),
+                "language": source.get("language", "en"),
+                "searchIn": source.get("search_in", "title,description"),
                 "sortBy": "publishedAt",
                 "pageSize": source.get("max_results", 25),
-                "apiKey": key,
             }
         )
-        data = request_json(f"https://newsapi.org/v2/everything?{params}")
+        data = request_json(f"https://newsapi.org/v2/everything?{params}", headers={"X-Api-Key": key})
         for article in data.get("articles", []):
             signals.append(
                 {
