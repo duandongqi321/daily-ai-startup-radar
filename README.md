@@ -103,11 +103,3 @@ daily-ai-startup-radar/
     `-- delivery_channels.md
 ```
 
-## V0 Defaults
-
-- Regions: Silicon Valley, New York, Singapore, and Hong Kong
-- Research window: last 24 hours by default; expands to 72 hours after weekends or when signals are sparse
-- Company count: 5-7 companies per standard briefing
-- Output format: self-contained HTML
-- Language: configurable by user profile
-- Focus: startup ideas, product patterns, business models, risks, and localization opportunities
