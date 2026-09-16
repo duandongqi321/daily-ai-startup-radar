@@ -26,10 +26,8 @@ It tracks AI startup signals from the last 30 days across Silicon Valley, New Yo
 
 ## How To Use
 
-1. Download this repository or the release zip.
-2. Use it in one of two ways:
-   - ChatGPT/Codex: upload the Skill folder or zip file and invoke `SKILL.md`.
-   - Claude, Gemini, Manus, or another LLM: open `UNIVERSAL_PROMPT.md`, paste it into the model, and attach or paste the relevant reference files when needed.
+1. Download this repository or the latest release source zip.
+2. Read [docs/USAGE.md](docs/USAGE.md) for ChatGPT, Claude, Gemini, Manus, and local API-backed usage.
 3. Start with onboarding so the model can generate your Personal Lens profile.
 4. Run the HTML briefing with a prompt like:
 
@@ -48,6 +46,17 @@ You can also ask for onboarding first:
 ```text
 Use $daily-ai-startup-radar to onboard me and create my Personal Lens profile.
 ```
+
+See [examples/sample-briefing.html](examples/sample-briefing.html) for the expected HTML reading experience.
+
+## Use In Different LLMs
+
+- **ChatGPT / Codex:** use `SKILL.md` as the entrypoint and include the `references/` files when needed.
+- **Claude:** paste `UNIVERSAL_PROMPT.md`, attach the relevant reference files, and ask for an English HTML briefing.
+- **Gemini:** use `UNIVERSAL_PROMPT.md` plus `references/scoring_rubric.md` and `references/output_templates.md`.
+- **Manus:** use the workflow as a research task and ask Manus to save the final output as a self-contained HTML file.
+
+For exact prompts, see [docs/USAGE.md](docs/USAGE.md).
 
 ## Configure Your Personal Lens
 
@@ -81,6 +90,17 @@ The default briefing is a single HTML file designed for fast reading:
 - Expandable details for deeper reading
 - Source links and evidence notes
 
+## Signal Verification Buckets
+
+API results are discovery inputs, not proof. The local normalization script separates signals into buckets:
+
+- `verified_company_candidate`: promising signal that still needs source enrichment before ranking.
+- `product_launch_only`: Product Hunt launch or similar product signal; useful for idea discovery but not enough for company ranking.
+- `project_signal_needs_verification`: GitHub/repo-only signal; keep in watchlists until tied to a real product or company.
+- `needs_verification`: thin signal that needs a product page, company source, or credible article.
+
+Only externally verified companies should appear in ranked company cards.
+
 ## Repository Structure
 
 ```text
@@ -100,7 +120,10 @@ daily-ai-startup-radar/
 |   |-- sources.example.yaml
 |   `-- user_profile.example.yaml
 |-- docs/
-|   `-- PUBLISHING.md
+|   |-- PUBLISHING.md
+|   `-- USAGE.md
+|-- examples/
+|   `-- sample-briefing.html
 |-- scripts/
 |   |-- fetch_signals.py
 |   `-- normalize_signals.py

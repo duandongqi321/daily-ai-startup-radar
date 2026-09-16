@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daily AI Startup Radar - Sample Briefing</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --ink: #172026;
+      --muted: #5f6b76;
+      --line: #dde3ea;
+      --accent: #0f766e;
+      --accent-soft: #dff7f3;
+      --warn: #9a5b00;
+      --warn-soft: #fff4df;
+      --risk: #b42318;
+      --risk-soft: #ffebe8;
+      --good: #137333;
+      --good-soft: #e6f4ea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+    header, .card, .section-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    header { padding: 26px; }
+    h1, h2, h3 { margin: 0; line-height: 1.18; }
+    h1 { font-size: clamp(28px, 4vw, 42px); }
+    h2 { font-size: 22px; margin: 28px 0 12px; }
+    h3 { font-size: 18px; }
+    p { margin: 8px 0 0; }
+    a { color: var(--accent); }
+    ul { padding-left: 20px; margin: 8px 0 0; }
+    .meta, .muted { color: var(--muted); }
+    .grid { display: grid; gap: 12px; }
+    .summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tile, .card, .section-card { padding: 16px; }
+    .tile {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .tile strong {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+    .card-head {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .score {
+      min-width: 72px;
+      text-align: right;
+      color: var(--accent);
+      font-size: 26px;
+      font-weight: 800;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: #eef2f6;
+      color: #38434f;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .chip.good { background: var(--good-soft); color: var(--good); }
+    .chip.warn { background: var(--warn-soft); color: var(--warn); }
+    .chip.risk { background: var(--risk-soft); color: var(--risk); }
+    .score-row {
+      display: grid;
+      grid-template-columns: minmax(150px, 1fr) 52px minmax(120px, 2fr);
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .bar {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e8edf2;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      width: var(--pct);
+      border-radius: inherit;
+      background: var(--accent);
+    }
+    details {
+      margin-top: 12px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+    }
+    @media (max-width: 860px) {
+      .summary-grid, .cards { grid-template-columns: 1fr; }
+      .score-row { grid-template-columns: 1fr 52px; }
+      .score-row .bar { grid-column: 1 / -1; }
+      header { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="meta">Sample briefing · Last 30 days · English output</p>
+      <h1>Daily AI Startup Radar</h1>
+      <p class="muted">This sample shows the intended reading experience. Do not treat it as a current briefing; rerun the workflow for fresh research.</p>
+      <div class="grid summary-grid">
+        <div class="tile"><strong>Top Theme</strong><span>AI agents are moving from chat interfaces into owned workflows.</span></div>
+        <div class="tile"><strong>Best Opportunity</strong><span>Service-first vertical agents with clear customer pain.</span></div>
+        <div class="tile"><strong>Main Risk</strong><span>High valuations and crowded generic-agent categories.</span></div>
+        <div class="tile"><strong>Personal Lens</strong><span>Look for APAC-localized versions that a small team can test.</span></div>
+      </div>
+    </header>
+
+    <section>
+      <h2>Top Picks</h2>
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <span class="rank">1</span>
+              <h3>Cognition</h3>
+              <p class="meta">San Francisco · AI coding agents · Strong Watch</p>
+            </div>
+            <div class="score">83/100</div>
+          </div>
+          <div class="chips">
+            <span class="chip good">High confidence</span>
+            <span class="chip warn">Late-stage benchmark</span>
+            <span class="chip risk">Crowded category</span>
+          </div>
+          <p><strong>Signal:</strong> Cognition announced a large Series E financing and expanded the Devin software engineering agent platform.</p>
+          <p><strong>Why it matters:</strong> It shows how AI agents are being packaged as outcome-owning teammates rather than simple code autocomplete.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div>
+              <span class="rank">2</span>
+              <h3>Harvey</h3>
+              <p class="meta">San Francisco · Legal vertical AI · Strong Watch</p>
+            </div>
+            <div class="score">80/100</div>
+          </div>
+          <div class="chips">
+            <span class="chip good">High confidence</span>
+            <span class="chip warn">Enterprise sales</span>
+            <span class="chip risk">Regulated workflow</span>
+          </div>
+          <p><strong>Signal:</strong> Harvey announced major funding to expand AI workflows for legal and professional-services teams.</p>
+          <p><strong>Why it matters:</strong> It is a useful pattern for vertical AI: start with a painful, high-value workflow where domain trust matters.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Company Deep Dives</h2>
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <span class="rank">1</span>
+            <h3>Cognition</h3>
+            <p class="meta">Late-stage private AI startup · Developer productivity</p>
+          </div>
+          <div class="score">83/100</div>
+        </div>
+        <p><strong>Beginner explanation:</strong> Cognition helps engineering teams delegate software tasks to an AI agent. Instead of only suggesting snippets, the agent can plan, write, test, debug, and hand work back for review.</p>
+        <p><strong>Personal Lens:</strong> The direct product is too capital-heavy to copy, but the packaging is useful: pick a repeated technical workflow, own the outcome, and make the result easy to review.</p>
+
+        <details open>
+          <summary>Score Breakdown</summary>
+          <div class="score-row"><span>Signal freshness</span><strong>14/15</strong><div class="bar"><span style="--pct:93%"></span></div></div>
+          <div class="score-row"><span>AI centrality</span><strong>15/15</strong><div class="bar"><span style="--pct:100%"></span></div></div>
+          <div class="score-row"><span>Customer pain</span><strong>13/15</strong><div class="bar"><span style="--pct:87%"></span></div></div>
+          <div class="score-row"><span>Business model</span><strong>8/10</strong><div class="bar"><span style="--pct:80%"></span></div></div>
+          <div class="score-row"><span>Founder/team fit</span><strong>9/10</strong><div class="bar"><span style="--pct:90%"></span></div></div>
+          <div class="score-row"><span>Traction/distribution</span><strong>9/10</strong><div class="bar"><span style="--pct:90%"></span></div></div>
+          <div class="score-row"><span>Defensibility</span><strong>8/10</strong><div class="bar"><span style="--pct:80%"></span></div></div>
+          <div class="score-row"><span>Market timing</span><strong>9/10</strong><div class="bar"><span style="--pct:90%"></span></div></div>
+          <div class="score-row"><span>Personal Lens fit</span><strong>3/5</strong><div class="bar"><span style="--pct:60%"></span></div></div>
+        </details>
+
+        <details>
+          <summary>Drivers, Deductions, And Sources</summary>
+          <p><strong>Top drivers:</strong> Clear AI centrality, strong current signal, and a concrete customer workflow.</p>
+          <p><strong>Main deductions:</strong> Expensive category, hard technical execution, and less directly copyable for a small first project.</p>
+          <p><strong>Sources:</strong></p>
+          <ul>
+            <li><a href="https://cognition.com/blog/series-e">Cognition Series E announcement</a></li>
+            <li><a href="https://press.aboutamazon.com/aws/2026/9/cognition-and-aws-sign-multi-year-collaboration-agreement">AWS collaboration announcement</a></li>
+          </ul>
+        </details>
+      </article>
+    </section>
+
+    <section>
+      <h2>Launch Signals To Verify</h2>
+      <div class="section-card">
+        <p>Product Hunt and GitHub signals are useful for discovery, but they are not automatically ranked as companies.</p>
+        <ul>
+          <li><strong>Product launch only:</strong> A new Product Hunt launch with a product page, but no independent company evidence yet.</li>
+          <li><strong>Project signal:</strong> A repository or prototype that needs a company page, founder source, or credible article.</li>
+          <li><strong>Verified company candidate:</strong> A promising signal that has an external site or article and should be enriched next.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Personal Lens Takeaways</h2>
+      <div class="section-card">
+        <ul>
+          <li>Study late-stage winners for workflow packaging, not for copy-paste startup ideas.</li>
+          <li>For a small team, look for narrower versions in Hong Kong, Singapore, or APAC-specific professional workflows.</li>
+          <li>Prefer ideas that can start as a service, prove customer pain, then automate the repeated pieces.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

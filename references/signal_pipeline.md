@@ -70,7 +70,9 @@ Candidate fields:
 ```json
 {
   "company": "",
-  "verification_status": "verified_company/project_signal_needs_verification",
+  "verification_status": "needs_enrichment/product_launch_only/project_signal_needs_verification/needs_verification",
+  "verification_bucket": "verified_company_candidate/product_launch_only/project_signal_needs_verification/needs_verification",
+  "verification_next_step": "",
   "eligible_for_company_briefing": false,
   "verification_sources": [],
   "region": "",
@@ -126,6 +128,13 @@ Prefer signals that satisfy:
 - has external company verification beyond a repo-only signal
 - source is credible enough to cite
 - enough evidence exists for dimension-level scoring
+
+Use `verification_bucket` to route candidates:
+
+- `verified_company_candidate`: promising candidate with an article, launch, or external website. It still needs enrichment before it can be ranked.
+- `product_launch_only`: Product Hunt or similar launch signal. Useful for product-pattern discovery, but not enough for company ranking.
+- `project_signal_needs_verification`: GitHub or repository-only signal. Keep it in watchlists until tied to a real product/company source.
+- `needs_verification`: interesting but thin signal that needs a working product page, company source, or credible article.
 
 Reject or mark Low confidence:
 

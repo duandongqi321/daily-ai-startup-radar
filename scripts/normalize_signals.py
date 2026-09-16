@@ -116,6 +116,14 @@ PROVIDER_CANDIDATE_CAPS = {
     "product_hunt": 10,
     "github": 8,
 }
+PROJECT_SIGNAL_DOMAINS = {
+    "github.com",
+    "gitlab.com",
+    "bitbucket.org",
+}
+LAUNCH_PLATFORM_DOMAINS = {
+    "producthunt.com",
+}
 
 
 def slug_text(value: str) -> str:
@@ -185,6 +193,65 @@ def infer_signal_type(provider: str, text: str) -> str:
     if "partner" in lowered or "partnership" in lowered:
         return "partnership"
     return "news signal"
+
+
+def classify_verification_bucket(
+    signal: dict[str, Any],
+    provider: str,
+    url: str,
+    visible_text: str,
+    quality: dict[str, Any],
+) -> dict[str, str]:
+    """Classify how the candidate should be handled before manual enrichment."""
+    metadata = signal.get("metadata") or {}
+    domain = domain_of(url)
+    website_domain = domain_of(str(metadata.get("website") or ""))
+    product_hunt_url = str(metadata.get("product_hunt_url") or "")
+    has_external_site = bool(domain and domain not in LAUNCH_PLATFORM_DOMAINS and domain not in PROJECT_SIGNAL_DOMAINS)
+    has_product_hunt_page = bool(product_hunt_url or domain in LAUNCH_PLATFORM_DOMAINS)
+    has_companyish_hint = bool(
+        keyword_hits(visible_text, ("company", "startup", "enterprise", "customer", "founder", "team", "platform", "saas"))
+        or keyword_hits(str(signal.get("title") or ""), ("ai", "labs", "hq", "inc", "corp"))
+    )
+
+    if provider == "github":
+        return {
+            "verification_status": "project_signal_needs_verification",
+            "verification_bucket": "project_signal_needs_verification",
+            "verification_next_step": "Find an official product page, company site, launch page, founder profile, or credible article before treating this repository as a company.",
+        }
+
+    if provider == "product_hunt":
+        if has_external_site and has_companyish_hint and quality.get("score", 0) >= 8:
+            return {
+                "verification_status": "needs_enrichment",
+                "verification_bucket": "verified_company_candidate",
+                "verification_next_step": "Visit the product website and find an independent company, founder, funding, customer, or team source before ranking it as a verified company.",
+            }
+        if has_product_hunt_page or website_domain:
+            return {
+                "verification_status": "product_launch_only",
+                "verification_bucket": "product_launch_only",
+                "verification_next_step": "Treat this as a launch signal only until external company evidence is found.",
+            }
+        return {
+            "verification_status": "needs_verification",
+            "verification_bucket": "needs_verification",
+            "verification_next_step": "Find a working product page and independent company evidence.",
+        }
+
+    if provider in {"newsapi", "gdelt"} and url:
+        return {
+            "verification_status": "needs_enrichment",
+            "verification_bucket": "verified_company_candidate",
+            "verification_next_step": "Use the article as a discovery source, then add primary company or investor sources before ranking.",
+        }
+
+    return {
+        "verification_status": "needs_verification",
+        "verification_bucket": "needs_verification",
+        "verification_next_step": "Add external verification sources before ranking.",
+    }
 
 
 def quality_assessment(signal: dict[str, Any], visible_text: str) -> dict[str, Any]:
@@ -312,11 +379,12 @@ def candidate_from_signal(signal: dict[str, Any]) -> dict[str, Any]:
     quality = quality_assessment(signal, text)
     sector = infer_sector(text)
     customer = infer_customer(text)
-    is_repo_only = provider == "github"
-    verification_status = "project_signal_needs_verification" if is_repo_only else "needs_verification"
+    verification = classify_verification_bucket(signal, provider, url, text, quality)
     return {
         "company": title,
-        "verification_status": verification_status,
+        "verification_status": verification["verification_status"],
+        "verification_bucket": verification["verification_bucket"],
+        "verification_next_step": verification["verification_next_step"],
         "eligible_for_company_briefing": False,
         "verification_sources": [],
         "region": infer_region(text),

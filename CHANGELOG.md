@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+- Added `docs/USAGE.md` with ChatGPT, Claude, Gemini, Manus, and local API-backed usage instructions.
+- Added `examples/sample-briefing.html` to demonstrate the expected low-friction HTML output.
+- Added candidate `verification_bucket` and `verification_next_step` fields to better separate verified-company candidates, product launches, repo/project signals, and weak signals.
+- Updated README with usage links, sample output, and signal verification bucket guidance.
+
+## 0.6.0 - 2026-09-16
+
+- Improved Product Hunt signal collection with paginated fetching.
+- Added Product Hunt description, topics, votes, and keyword matching.
+- Fixed Product Hunt deduplication so different launches are not merged together.
+- Added source balancing across Product Hunt, NewsAPI, and GitHub.
+- Kept Product Hunt launches as discovery signals until externally verified.
+
 ## 0.5.0 - 2026-09-16
 
 - Made English the default output language.
