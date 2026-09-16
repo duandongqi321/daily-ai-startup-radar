@@ -3,6 +3,7 @@
 
 # Local user configuration. Keep personal lens details private by default.
 config/user_profile.yaml
+config/sources.yaml
 config/*.local.yaml
 config/*.secret.yaml
 
@@ -19,6 +20,9 @@ briefings/
 
 # Logs and temporary files
 *.log
+__pycache__/
+*.pyc
+work/
 tmp/
 temp/
 .cache/

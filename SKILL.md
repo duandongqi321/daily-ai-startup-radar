@@ -1,6 +1,6 @@
 ---
 name: daily-ai-startup-radar
-description: Create a low-friction HTML AI startup intelligence briefing with current research, quantified scoring, and a configurable Personal Lens.
+description: Create a low-friction HTML AI startup intelligence briefing with API-ready research, quantified scoring, and a configurable Personal Lens.
 metadata:
   short-description: HTML AI startup intelligence radar
 ---
@@ -15,8 +15,8 @@ This skill produces research-backed intelligence, not investment, legal, tax, or
 
 1. Establish the run context: briefing date, timezone, output language, recency window, target regions, and the user's profile. If `config/user_profile.yaml` exists, use it as the user's local Personal Lens unless the user provides a different profile. Default to Chinese output and the four target regions of Silicon Valley, New York, Singapore, and Hong Kong unless the user requests otherwise.
 2. If no usable profile is available, read [references/onboarding.md](references/onboarding.md) and run the compact onboarding. If the user wants to skip setup, use the V0 default profile in [config/user_profile.example.yaml](config/user_profile.example.yaml) and label it as a default.
-3. For a real daily briefing, browse or otherwise verify current sources. Read [references/research_playbook.md](references/research_playbook.md) before collecting signals.
-4. Build a candidate list of recent AI-related startup signals, dedupe names, and prefer startups where AI is core to the product or workflow.
+3. For a real daily briefing, browse or otherwise verify current sources. Read [references/research_playbook.md](references/research_playbook.md) before collecting signals. If the user wants API-backed collection or `config/sources.yaml` exists, also read [references/api_sources.md](references/api_sources.md) and [references/signal_pipeline.md](references/signal_pipeline.md).
+4. Build a candidate list of recent AI-related startup signals, dedupe names, and prefer startups where AI is core to the product or workflow. When local execution is available and API sources are configured, use `scripts/fetch_signals.py` and `scripts/normalize_signals.py` to collect and normalize raw signals before analysis.
 5. Read [references/scoring_rubric.md](references/scoring_rubric.md), score candidates with the quantified dimension standards, and select the most useful set for the user. A normal daily briefing should cover 5-7 companies, with geography balanced when evidence allows.
 6. Read [references/output_templates.md](references/output_templates.md) and produce a self-contained HTML briefing by default. Use the user's preferred language for visible text and include source links for each company.
 7. If the user asks to schedule, send, or push the briefing to ChatGPT, Lark, WhatsApp, SMS, or another channel, read [references/delivery_channels.md](references/delivery_channels.md). Do not claim delivery is configured unless the required scheduler, connector, webhook, or API credential is actually available and authorized.
@@ -39,6 +39,15 @@ The default final deliverable is a single, self-contained HTML briefing optimize
 - Startup stage: pre-seed through Series C by default. Include later-stage private AI companies only when the signal is unusually relevant.
 - Signal types: funding, product launch, public beta, customer win, strategic partnership, hiring spike, accelerator/demo-day appearance, regulatory approval, open-source traction, founder announcement, acquisition rumor only if well sourced.
 - Selection bias: favor companies that teach the user something about product shape, customer pain, distribution, business model, or localization opportunity.
+
+## API-Ready Research Mode
+
+The skill can use API-backed signal collection when the user provides credentials or a local `.env` file.
+
+- Public templates: `.env.example` and `config/sources.example.yaml`.
+- Private local files: `.env` and `config/sources.yaml`. These must not be committed.
+- Raw API output should be treated as discovery input, not truth. Every included claim still needs source review, deduplication, confidence grading, and scoring.
+- Missing API keys are not blockers. Skip unavailable sources and continue with available sources or manual web research.
 
 ## Personal Lens
 

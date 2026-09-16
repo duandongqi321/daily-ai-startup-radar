@@ -1,0 +1,75 @@
+version: "0.3.0"
+profile: "default-api-sources"
+
+defaults:
+  lookback_hours: 24
+  fallback_lookback_hours: 72
+  max_raw_results_per_source: 25
+  max_candidates_after_dedupe: 30
+  require_current_signal: true
+
+regions:
+  - "Silicon Valley"
+  - "New York"
+  - "Singapore"
+  - "Hong Kong"
+
+queries:
+  - '"AI startup" funding'
+  - '"AI agent" startup launch'
+  - '"vertical AI" startup'
+  - '"AI startup" "Singapore"'
+  - '"AI startup" "Hong Kong"'
+  - '"AI startup" "New York"'
+  - '"AI startup" "San Francisco"'
+
+sources:
+  - name: "github"
+    enabled: true
+    provider: "github"
+    purpose: "Find open-source AI infra, developer tools, and repo traction."
+    auth_env: "GITHUB_TOKEN"
+    max_results: 20
+    queries:
+      - 'AI agent startup created:>=<since-date>'
+      - 'LLM agent language:Python created:>=<since-date>'
+      - 'AI developer tools created:>=<since-date>'
+
+  - name: "gdelt"
+    enabled: true
+    provider: "gdelt"
+    purpose: "Find recent public news signals across regions."
+    auth_env: ""
+    max_results: 25
+    queries:
+      - '("AI startup" OR "artificial intelligence startup") ("Singapore" OR "Hong Kong" OR "New York" OR "San Francisco")'
+      - '("AI startup" funding OR launch OR partnership)'
+
+  - name: "product_hunt"
+    enabled: false
+    provider: "product_hunt"
+    purpose: "Find new AI product launches."
+    auth_env: "PRODUCTHUNT_TOKEN"
+    max_results: 20
+    queries:
+      - "AI"
+      - "agent"
+      - "developer tools"
+
+  - name: "newsapi"
+    enabled: false
+    provider: "newsapi"
+    purpose: "Find recent secondary news coverage."
+    auth_env: "NEWSAPI_KEY"
+    max_results: 25
+    queries:
+      - '"AI startup" AND (funding OR launch OR partnership)'
+
+  - name: "crunchbase"
+    enabled: false
+    provider: "crunchbase"
+    purpose: "Enrich company and funding data when a Crunchbase API key is available."
+    auth_env: "CRUNCHBASE_API_KEY"
+    max_results: 20
+    queries:
+      - "AI startup"

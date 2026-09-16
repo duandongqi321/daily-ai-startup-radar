@@ -1,4 +1,4 @@
-# Daily AI Startup Radar V0.2 Spec
+# Daily AI Startup Radar V0.3 Spec
 
 ## One-Line Goal
 
@@ -10,12 +10,13 @@ The user wants to know which recent AI startup signals are worth attention, what
 
 ## V0 Scope
 
-- Track recent AI-related startup signals across Silicon Valley, New York, Singapore, and Hong Kong.
+- Track recent AI-related startup signals across Silicon Valley, New York, Singapore, and Hong Kong through web research and optional API-backed collection.
 - Explain each selected company in beginner-friendly language.
 - Analyze company type, business, customer, founder/team, strength, potential, risk, and Personal Lens.
 - Score companies with a transparent, quantified rubric and visible dimension breakdown.
 - Produce a daily HTML briefing that can be scanned quickly, opened as a standalone file, or reformatted for push channels.
 - Run compact onboarding when no user profile exists.
+- Provide API source configuration templates and local helper scripts for raw signal collection and normalization.
 
 ## Non-Goals
 
@@ -33,6 +34,7 @@ The user wants to know which recent AI startup signals are worth attention, what
 - Recency window.
 - Output language, HTML format preference, and delivery style.
 - Available research tools and delivery integrations.
+- Optional API source configuration and local environment credentials.
 
 ## Candidate Signals
 
@@ -46,6 +48,19 @@ Good startup signals include:
 - Open-source or developer traction
 - Regulatory clearance or market-entry approval
 - Founder/operator announcement with credible context
+
+## API-Ready Signal Collection
+
+The V0.3 pipeline supports:
+
+- `.env.example` for local credential names
+- `config/sources.example.yaml` for source configuration
+- `references/api_sources.md` for source roles and credential handling
+- `references/signal_pipeline.md` for the raw-signal to candidate workflow
+- `scripts/fetch_signals.py` for raw API collection
+- `scripts/normalize_signals.py` for candidate normalization and deduplication
+
+Raw API results are discovery inputs only. They must still be verified, deduplicated, filtered, enriched, scored, and cited before appearing in a briefing.
 
 ## Output Shape
 
@@ -102,6 +117,7 @@ Example lens questions:
 - The output feels useful to a beginner but still sharp enough for founder thinking.
 - The Personal Lens changes the analysis, instead of being a generic final paragraph.
 - The score is explainable at the dimension level, not just a single number.
+- API-backed collection can run without committing credentials and can skip unavailable sources safely.
 
 ## V1 Ideas
 
@@ -111,3 +127,4 @@ Example lens questions:
 - Add saved watchlists by company, sector, and founder.
 - Add weekly pattern review and "startup ideas generated from this week's signals."
 - Add a structured database or spreadsheet export.
+- Add stronger provider-specific enrichers for paid data sources.

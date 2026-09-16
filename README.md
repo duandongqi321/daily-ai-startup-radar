@@ -2,11 +2,12 @@
 
 Daily AI Startup Radar is an open-source ChatGPT Skill for generating personalized AI startup intelligence briefings as low-friction HTML reports.
 
-It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens and quantified scorecard.
+It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens and quantified scorecard. It is API-ready, so users can connect sources such as GitHub, GDELT, Product Hunt, NewsAPI, and Crunchbase to reduce missed current events.
 
 ## What It Does
 
 - Finds recent AI startup signals from target regions
+- Supports API-backed signal collection with safe local key handling
 - Explains what each company does in plain language
 - Analyzes company type, business model, customer, team signal, strengths, potential, and risks
 - Scores companies with a quantified rubric and dimension-level evidence
@@ -75,6 +76,7 @@ The default briefing is a single HTML file designed for fast reading:
 ```text
 daily-ai-startup-radar/
 |-- .gitignore
+|-- .env.example
 |-- CHANGELOG.md
 |-- CONTRIBUTING.md
 |-- LICENSE
@@ -84,13 +86,19 @@ daily-ai-startup-radar/
 |-- agents/
 |   `-- openai.yaml
 |-- config/
+|   |-- sources.example.yaml
 |   `-- user_profile.example.yaml
 |-- docs/
 |   `-- PUBLISHING.md
+|-- scripts/
+|   |-- fetch_signals.py
+|   `-- normalize_signals.py
 `-- references/
+    |-- api_sources.md
     |-- onboarding.md
     |-- research_playbook.md
     |-- scoring_rubric.md
+    |-- signal_pipeline.md
     |-- output_templates.md
     `-- delivery_channels.md
 ```
@@ -103,6 +111,22 @@ daily-ai-startup-radar/
 - Output format: self-contained HTML
 - Language: configurable by user profile
 - Focus: startup ideas, product patterns, business models, risks, and localization opportunities
+
+## API-Ready Mode
+
+The repository includes source templates and helper scripts for local API-backed collection:
+
+```text
+cp .env.example .env
+cp config/sources.example.yaml config/sources.yaml
+python scripts/fetch_signals.py --dry-run
+python scripts/fetch_signals.py
+python scripts/normalize_signals.py
+```
+
+Do not commit `.env` or `config/sources.yaml`. Keep real API keys local.
+
+API-backed collection is optional. Without keys, the Skill can still run from web research and manual source review.
 
 ## Delivery Notes
 

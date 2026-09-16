@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-09-16
+
+- Added API-ready source configuration with `config/sources.example.yaml`.
+- Added `.env.example` for safe local API key handling.
+- Added API source guidance and signal pipeline references.
+- Added local helper scripts for fetching raw signals and normalizing candidates.
+- Updated the core workflow to support API-backed research while keeping manual source verification.
+
 ## 0.2.0 - 2026-09-15
 
 - Made self-contained HTML the default briefing format.
