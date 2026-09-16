@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0 - 2026-09-16
+
+- Made English the default output language.
+- Changed the default research window from 24 hours to the last 30 days.
+- Added a verified-company gate: ranked company cards must be externally verifiable, not GitHub-only repo signals.
+- Added `UNIVERSAL_PROMPT.md` for Claude, Gemini, Manus, ChatGPT, and other LLMs.
+- Updated API, research, scoring, output, onboarding, and delivery guidance to separate verified companies from project signals.
+
 ## 0.4.0 - 2026-09-16
 
 - Improved GitHub signal queries for AI agents, vertical AI, healthcare AI, career AI, and sports AI.

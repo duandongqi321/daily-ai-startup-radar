@@ -1,15 +1,17 @@
-version: "0.3.0"
+version: "0.5.0"
 profile_name: "apac-founder-default"
-language: "zh-CN"
+language: "en"
 timezone: "Asia/Hong_Kong"
 
 briefing:
   cadence: "daily"
   preferred_delivery_time: "08:00"
-  recency_window_hours: 24
-  fallback_recency_window_hours: 72
+  recency_window_hours: 720
+  fallback_recency_window_hours: 720
   max_companies: 6
-  min_sources_per_company: 1
+  min_sources_per_company: 2
+  require_verified_companies: true
+  allow_repo_only_in_ranked_briefing: false
   output_format: "html"
   output_style: "low_friction_html_briefing"
   preferred_depth: "standard"

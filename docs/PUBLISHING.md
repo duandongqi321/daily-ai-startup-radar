@@ -33,7 +33,7 @@ Use this if you prefer clicking in the browser.
 2. Click the `+` button in the top right.
 3. Choose `New repository`.
 4. Repository name: `daily-ai-startup-radar`.
-5. Description: `An open-source ChatGPT Skill for personalized daily AI startup intelligence.`
+5. Description: `An open-source, LLM-portable workflow for personalized AI startup intelligence.`
 6. Visibility: `Public`.
 7. Do not add a README, license, or gitignore on GitHub, because this folder already has them.
 8. Click `Create repository`.
@@ -73,7 +73,7 @@ git init
 git branch -M main
 git add .
 git commit -m "Initial Daily AI Startup Radar skill"
-gh repo create daily-ai-startup-radar --public --source=. --push --description "An open-source ChatGPT Skill for personalized daily AI startup intelligence."
+gh repo create daily-ai-startup-radar --public --source=. --push --description "An open-source, LLM-portable workflow for personalized AI startup intelligence."
 ```
 
 ## Create a Release

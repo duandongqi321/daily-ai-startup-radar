@@ -1,6 +1,6 @@
 # Output Templates
 
-Use the user's preferred language for visible copy. Default to the language in `config/user_profile.yaml` when available. Keep company names in their original language and explain technical terms briefly.
+Use English for visible copy by default. Keep company names in their original language and explain technical terms briefly. Use another output language only when the user explicitly asks for it.
 
 ## Default Output: Self-Contained HTML
 
@@ -52,6 +52,7 @@ The HTML briefing must include:
 7. Personal Lens takeaways.
 8. Watchlist and next questions.
 9. Sources and confidence notes.
+10. Verification notes: how each ranked company was verified, plus a separate section for project signals that need verification if any were discovered.
 
 ## Company Card Requirements
 
@@ -72,6 +73,7 @@ Each company card must show:
 - Dimension-level scores
 - Personal Lens insight
 - Source links
+- Verification status and verification sources
 
 ## HTML Skeleton
 

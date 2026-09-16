@@ -31,6 +31,12 @@ Best for:
 - open-source agents
 - early technical traction
 
+Important:
+
+- GitHub is a discovery source, not company verification.
+- A repository can be real while the company is not yet verifiable.
+- Do not promote a GitHub-only item into Top Picks or Company Deep Dives unless it is tied to a verified company, official product page, credible launch, or public founder/company source.
+
 Useful signals:
 
 - recently created repositories
@@ -141,6 +147,7 @@ Official docs: https://data.crunchbase.com/docs
 
 - Use at least two source categories when possible: one discovery source and one verification/enrichment source.
 - Do not include a company only because it appeared in an API response.
+- Do not include a company only because a GitHub repository exists.
 - Down-rank stale results, generic AI wrappers, and weak source matches.
 - Preserve source URLs and timestamps through the whole pipeline.
 - Mark source confidence as Low when the only evidence is a social post, vague launch page, or thin metadata.

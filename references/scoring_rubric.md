@@ -1,6 +1,8 @@
 # Scoring Rubric
 
-Score each company out of 100 using the dimensions below. The score should help the reader understand relative priority; it is not an investment recommendation.
+Score each verified company out of 100 using the dimensions below. The score should help the reader understand relative priority; it is not an investment recommendation.
+
+Only score ranked company cards after the company passes the verified-company gate. Repo-only project signals may be described in a watchlist, but they should not receive the full company scorecard unless they are tied to an externally verifiable company or product.
 
 Every company must include:
 
@@ -35,8 +37,8 @@ Use these anchors to assign each dimension score. Intermediate scores are allowe
 - 0: No sourceable recent signal.
 - 3: Social-only, vague, or older than 30 days.
 - 6: One source, but the signal is minor, recycled, or older than 7 days.
-- 10: Credible source within 7 days; signal is relevant but not highly material.
-- 15: Primary or highly credible source within 72 hours; signal is material, such as funding, launch, customer win, partnership, regulatory approval, or meaningful traction.
+- 10: Credible source within 30 days; signal is relevant but not highly material.
+- 15: Primary or highly credible source within 30 days; signal is material, such as funding, launch, customer win, partnership, regulatory approval, or meaningful traction. Give extra credit within this band when the signal is within 7 days.
 
 Evidence required: source date, signal type, source link, and what changed.
 
@@ -124,9 +126,11 @@ Evidence required: explicit link to the user's profile and one practical learnin
 Apply caps after adding the raw dimension scores:
 
 - If there is no sourceable current signal, max score is 54.
+- If the company cannot be externally verified, do not include it in Top Picks or Company Deep Dives.
 - If AI centrality is unclear, max score is 69.
 - If the company is not clearly a startup, max score is 59 unless it is included only as market context.
 - If the briefing relies on a single weak source, max confidence is Low and max score is 69.
+- If the only source is GitHub, max confidence is Low and the item should be treated as a project signal, not a company.
 - If a company has strong hype but unclear buyer and no traction, max score is 64.
 
 ## Rating Bands

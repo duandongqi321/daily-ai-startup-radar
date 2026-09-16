@@ -4,7 +4,7 @@ Use this playbook before producing a real daily briefing.
 
 ## Research Objective
 
-Find recent AI-related startup signals that are useful for the user's Personal Lens. Prioritize sources that explain what changed recently and why the company is worth tracking.
+Find AI-related startup signals from the last 30 days that are useful for the user's Personal Lens. Prioritize sources that prove the company is real, explain what changed recently, and show why the company is worth tracking.
 
 ## Source Hierarchy
 
@@ -17,6 +17,29 @@ Prefer sources in this order:
 
 Do not use private, leaked, or doxxing-style information. Founder/team notes should come from public professional sources.
 
+## Verified Company Gate
+
+Top Picks and Company Deep Dives must contain real, externally verifiable companies only.
+
+Include a company only when at least one of these is available:
+
+- company homepage, product page, official blog, or press release
+- credible news article, funding announcement, investor post, accelerator page, or public partnership/customer announcement
+- company database or launch profile such as Crunchbase, Product Hunt, Wellfound, YC, TechCrunch profile coverage, LinkedIn company page, or equivalent
+- public founder/team source tied to the product or company
+
+Use at least two useful source links when possible. A single source is acceptable only when it is a strong primary source and the briefing clearly marks the missing context.
+
+Do not include these in company rankings unless independently verified as a real company:
+
+- GitHub-only repositories
+- personal projects
+- student/class projects
+- templates, starter kits, clones, demos, awesome lists, docs mirrors, or case studies
+- vague "AI startup" mentions with no company page or sourceable team/product evidence
+
+If a signal is interesting but not company-verified, put it in a separate "Project Signals To Verify" or "Watchlist" section.
+
 ## Region Definitions
 
 - Silicon Valley: San Francisco Bay Area, San Jose, Palo Alto, Menlo Park, Mountain View, Redwood City, Oakland, Berkeley, and nearby venture ecosystem signals.
@@ -28,7 +51,7 @@ If a company is remote-first or has unclear geography, assign the region based o
 
 ## Search Strategy
 
-Run several targeted searches instead of one broad search. Combine:
+Run several targeted searches instead of one broad search. Search the last 30 days by default. Combine:
 
 - Region terms: "San Francisco AI startup", "Silicon Valley AI startup", "New York AI startup", "Singapore AI startup", "Hong Kong AI startup"
 - Signal terms: funding, seed, Series A, launch, beta, partnership, customer, accelerator, demo day, hiring, open source
@@ -52,6 +75,8 @@ For each candidate, capture:
 
 ```text
 company:
+verification_status:
+verification_sources:
 region:
 source_date:
 signal_type:
@@ -79,7 +104,7 @@ notes:
 
 ## Evidence Rules
 
-- Use at least one current source per included company; two is better when claims are material.
+- Use at least one strong current source per included company; two useful sources are the default target.
 - Cite every funding amount, investor, launch, partnership, customer, founder background, regulatory approval, or traction claim.
 - If evidence is weak, downgrade confidence instead of filling gaps.
 - If no strong current signals exist in a region, say so and include the best available watchlist item with lower confidence.
@@ -92,6 +117,7 @@ Start from 10-20 candidates when possible, then choose 5-7 companies for the bri
 Prefer candidates with:
 
 - A recent, sourceable signal
+- External evidence that the company is real and findable
 - AI as a core product capability, not just marketing language
 - A clear user or buyer
 - A product wedge that teaches something
@@ -102,6 +128,7 @@ Prefer candidates with:
 Reject or down-rank:
 
 - Generic AI wrappers with no clear workflow
+- Repo-only projects with no company/product verification
 - Companies with only vague stealth claims
 - Old funding news outside the window
 - Large public companies unless they are relevant context for a startup signal

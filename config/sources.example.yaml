@@ -1,12 +1,15 @@
-version: "0.4.0"
+version: "0.5.0"
 profile: "default-api-sources"
 
 defaults:
-  lookback_hours: 24
-  fallback_lookback_hours: 72
+  lookback_hours: 720
+  fallback_lookback_hours: 720
   max_raw_results_per_source: 25
   max_candidates_after_dedupe: 30
   require_current_signal: true
+  require_verified_company: true
+  allow_repo_only_in_ranked_briefing: false
+  min_sources_per_company: 2
 
 regions:
   - "Silicon Valley"

@@ -16,7 +16,7 @@ Ask these questions in the user's language. Let the user answer in free text, bu
 6. What kind of opportunities are most interesting? Examples: quick solo-founder tests, B2B workflow tools, local services, enterprise SaaS, consumer apps, marketplaces, APIs, data products.
 7. What should the radar avoid? Examples: heavy regulation, crypto, hardware, defense, enterprise-only sales, ideas needing large capital, anything outside your values.
 8. What output style do you prefer? Options: concise daily digest, standard briefing, deep-dive briefing, Lark-friendly compact format, WhatsApp/SMS summary.
-9. What language and timezone should it use?
+9. What timezone should it use? English is the default output language unless you explicitly prefer another language.
 
 ## Optional 15-Minute Deepening
 
@@ -51,10 +51,11 @@ personal_lens:
   risk_appetite: "<low|medium|high>"
   personal_lens_questions: []
 briefing:
-  recency_window_hours: 24
-  fallback_recency_window_hours: 72
+  recency_window_hours: 720
+  fallback_recency_window_hours: 720
   max_companies: 6
   preferred_depth: "standard"
+  require_verified_companies: true
 delivery:
   chatgpt:
     enabled: true

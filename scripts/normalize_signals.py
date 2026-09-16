@@ -276,8 +276,13 @@ def candidate_from_signal(signal: dict[str, Any]) -> dict[str, Any]:
     quality = quality_assessment(signal, text)
     sector = infer_sector(text)
     customer = infer_customer(text)
+    is_repo_only = provider == "github"
+    verification_status = "project_signal_needs_verification" if is_repo_only else "needs_verification"
     return {
         "company": title,
+        "verification_status": verification_status,
+        "eligible_for_company_briefing": False,
+        "verification_sources": [],
         "region": infer_region(text),
         "source_date": signal.get("published_at") or "",
         "signal_type": infer_signal_type(provider, text),

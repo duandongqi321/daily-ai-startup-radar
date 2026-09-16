@@ -1,14 +1,15 @@
 # Daily AI Startup Radar
 
-Daily AI Startup Radar is an open-source ChatGPT Skill for generating personalized AI startup intelligence briefings as low-friction HTML reports.
+Daily AI Startup Radar is an open-source, LLM-portable workflow for generating personalized AI startup intelligence briefings as low-friction HTML reports.
 
-It tracks recent AI startup signals across Silicon Valley, New York, Singapore, and Hong Kong, then explains each company in beginner-friendly language through a configurable Personal Lens and quantified scorecard. It is API-ready, so users can connect sources such as GitHub, GDELT, Product Hunt, NewsAPI, and Crunchbase to reduce missed current events.
+It tracks AI startup signals from the last 30 days across Silicon Valley, New York, Singapore, and Hong Kong, then explains verified companies in beginner-friendly English through a configurable Personal Lens and quantified scorecard. It is API-ready, so users can connect sources such as GitHub, GDELT, Product Hunt, NewsAPI, and Crunchbase to reduce missed current events.
 
 ## What It Does
 
-- Finds recent AI startup signals from target regions
+- Finds AI startup signals from the last 30 days in target regions
+- Requires ranked companies to be externally verifiable before inclusion
 - Supports API-backed signal collection with safe local key handling
-- Explains what each company does in plain language
+- Explains what each verified company does in plain English
 - Analyzes company type, business model, customer, team signal, strengths, potential, and risks
 - Scores companies with a quantified rubric and dimension-level evidence
 - Adds a configurable Personal Lens for founder, operator, investor, career, or market-entry use cases
@@ -26,12 +27,20 @@ It tracks recent AI startup signals across Silicon Valley, New York, Singapore, 
 ## How To Use
 
 1. Download this repository or the release zip.
-2. Upload the Skill folder or zip file to ChatGPT Skills.
-3. Start with onboarding so ChatGPT can generate your Personal Lens profile.
+2. Use it in one of two ways:
+   - ChatGPT/Codex: upload the Skill folder or zip file and invoke `SKILL.md`.
+   - Claude, Gemini, Manus, or another LLM: open `UNIVERSAL_PROMPT.md`, paste it into the model, and attach or paste the relevant reference files when needed.
+3. Start with onboarding so the model can generate your Personal Lens profile.
 4. Run the HTML briefing with a prompt like:
 
 ```text
 Use $daily-ai-startup-radar to create today's HTML Daily AI Startup Radar for me.
+```
+
+For non-ChatGPT tools:
+
+```text
+Use the instructions in UNIVERSAL_PROMPT.md to create an English HTML Daily AI Startup Radar using verified companies from the last 30 days.
 ```
 
 You can also ask for onboarding first:
@@ -58,13 +67,14 @@ The Personal Lens controls:
 - Opportunity style
 - Ideas or risks to avoid
 - Preferred language, timezone, briefing depth, and delivery style
+- Verification strictness and source requirements
 
 ## Output Experience
 
 The default briefing is a single HTML file designed for fast reading:
 
 - Top summary for a 30-second scan
-- Ranked company cards
+- Ranked verified-company cards
 - Total score, rating band, and confidence for each company
 - Dimension-level scoring breakdown
 - Risk tags and key deductions
@@ -83,6 +93,7 @@ daily-ai-startup-radar/
 |-- SKILL.md
 |-- README.md
 |-- SPEC.md
+|-- UNIVERSAL_PROMPT.md
 |-- agents/
 |   `-- openai.yaml
 |-- config/
@@ -102,4 +113,3 @@ daily-ai-startup-radar/
     |-- output_templates.md
     `-- delivery_channels.md
 ```
-

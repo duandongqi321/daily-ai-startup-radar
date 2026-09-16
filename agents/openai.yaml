@@ -1,5 +1,5 @@
 interface:
   display_name: "Daily AI Startup Radar"
-  short_description: "HTML AI startup briefing"
+  short_description: "Verified English AI startup briefing"
   brand_color: "#0F766E"
-  default_prompt: "Use $daily-ai-startup-radar to create today's HTML AI startup briefing."
+  default_prompt: "Use $daily-ai-startup-radar to create an English HTML AI startup briefing using verified companies from the last 30 days."

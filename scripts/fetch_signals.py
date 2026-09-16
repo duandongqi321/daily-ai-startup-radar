@@ -45,6 +45,7 @@ def parse_simple_sources_yaml(path: pathlib.Path) -> dict[str, Any]:
     data: dict[str, Any] = {"sources": []}
     current_source: dict[str, Any] | None = None
     in_sources = False
+    in_defaults = False
     in_queries = False
     source_queries = False
 
@@ -56,14 +57,26 @@ def parse_simple_sources_yaml(path: pathlib.Path) -> dict[str, Any]:
 
         if line == "sources:":
             in_sources = True
+            in_defaults = False
             in_queries = False
+            continue
+        if line == "defaults:":
+            in_defaults = True
+            in_sources = False
+            in_queries = False
+            data.setdefault("defaults", {})
             continue
         if line == "queries:" and not in_sources:
             in_queries = True
+            in_defaults = False
             data.setdefault("queries", [])
             continue
         if in_queries and line.startswith("- "):
             data["queries"].append(unquote_yaml_value(line[2:]))
+            continue
+        if in_defaults and indent == 2 and ":" in line:
+            key, value = line.split(":", 1)
+            data.setdefault("defaults", {})[key.strip()] = parse_scalar(value.strip())
             continue
 
         if in_sources and indent == 2 and line.startswith("- "):
@@ -319,7 +332,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Fetch raw AI startup signals.")
     parser.add_argument("--config", default=str(DEFAULT_CONFIG if DEFAULT_CONFIG.exists() else EXAMPLE_CONFIG))
     parser.add_argument("--out", default=str(ROOT / "work" / "raw_signals.json"))
-    parser.add_argument("--lookback-hours", type=int, default=24)
+    parser.add_argument("--lookback-hours", type=int, default=None)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
         "--allow-insecure-ssl",
@@ -332,6 +345,8 @@ def main() -> int:
     load_dotenv(ROOT / ".env")
     config_path = pathlib.Path(args.config)
     config = parse_simple_sources_yaml(config_path)
+    defaults = config.get("defaults", {}) if isinstance(config.get("defaults", {}), dict) else {}
+    lookback_hours = int(args.lookback_hours or defaults.get("lookback_hours") or 720)
 
     plan = []
     signals: list[dict[str, Any]] = []
@@ -340,13 +355,13 @@ def main() -> int:
         plan.append({"name": source.get("name"), "provider": source.get("provider"), "enabled": source.get("enabled")})
         if args.dry_run:
             continue
-        results, reason = fetch_source(source, args.lookback_hours)
+        results, reason = fetch_source(source, lookback_hours)
         if reason:
             skipped.append({"source": str(source.get("name")), "reason": reason})
         signals.extend(results)
 
     if args.dry_run:
-        print(json.dumps({"config": str(config_path), "lookback_hours": args.lookback_hours, "plan": plan}, ensure_ascii=False, indent=2))
+        print(json.dumps({"config": str(config_path), "lookback_hours": lookback_hours, "plan": plan}, ensure_ascii=False, indent=2))
         return 0
 
     out_path = pathlib.Path(args.out)
@@ -354,7 +369,7 @@ def main() -> int:
     payload = {
         "fetched_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "config": str(config_path),
-        "lookback_hours": args.lookback_hours,
+        "lookback_hours": lookback_hours,
         "raw_signal_count": len(signals),
         "skipped_sources": skipped,
         "signals": signals,

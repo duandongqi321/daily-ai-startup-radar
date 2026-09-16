@@ -19,7 +19,7 @@ What is needed:
 Suggested scheduled prompt:
 
 ```text
-Use $daily-ai-startup-radar to create my Daily AI Startup Radar. Use my saved Personal Lens, cover Silicon Valley, New York, Singapore, and Hong Kong, focus on the last 24 hours, and notify me only when the briefing is ready or when research cannot be completed.
+Use $daily-ai-startup-radar to create my Daily AI Startup Radar. Use my saved Personal Lens, cover Silicon Valley, New York, Singapore, and Hong Kong, focus on the last 30 days, include only externally verified companies in the ranked briefing, and notify me only when the briefing is ready or when research cannot be completed.
 ```
 
 ## Lark or Feishu

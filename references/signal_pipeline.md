@@ -9,7 +9,7 @@ source config
 → fetch raw signals
 → normalize fields
 → deduplicate companies/events
-→ filter by recency, region, AI relevance, and source quality
+→ filter by recency, region, AI relevance, company verification, and source quality
 → enrich with supporting sources
 → score with the rubric
 → select 5-7 companies
@@ -53,6 +53,8 @@ Raw signals should include:
 - region hints
 - source-specific metadata
 
+GitHub repositories are discovery signals only. A GitHub result must be enriched with a company/product source before it can become a ranked company.
+
 ## Step 2: Normalize Signals
 
 Use `scripts/normalize_signals.py` to transform raw source-specific results into a shared candidate format.
@@ -68,6 +70,9 @@ Candidate fields:
 ```json
 {
   "company": "",
+  "verification_status": "verified_company/project_signal_needs_verification",
+  "eligible_for_company_briefing": false,
+  "verification_sources": [],
   "region": "",
   "source_date": "",
   "signal_type": "",
@@ -114,10 +119,11 @@ Keep all source links when merging duplicates.
 
 Prefer signals that satisfy:
 
-- within the configured lookback window
+- within the configured 30-day lookback window
 - relevant to at least one target region or globally relevant with a clear region basis
 - AI is central or plausibly central
 - has product, company, launch, funding, customer, traction, or vertical workflow evidence
+- has external company verification beyond a repo-only signal
 - source is credible enough to cite
 - enough evidence exists for dimension-level scoring
 
@@ -125,6 +131,7 @@ Reject or mark Low confidence:
 
 - stale reposts
 - vague listicles
+- repo-only results that cannot be connected to a real company, product page, founder profile, launch, or credible article
 - templates, starter kits, tutorials, clones, examples, docs mirrors, and case studies that are not current company signals
 - unsupported social-only claims
 - public company news unless it affects a startup signal
@@ -139,6 +146,8 @@ For shortlisted companies, add:
 - funding or launch source
 - customer/partnership source when claimed
 - GitHub/Product Hunt/press evidence when relevant
+
+If enrichment cannot verify the company, keep the item out of the ranked company briefing and move it to a watchlist section.
 
 ## Step 6: Score
 

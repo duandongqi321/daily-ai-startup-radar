@@ -1,22 +1,24 @@
-# Daily AI Startup Radar V0.3 Spec
+# Daily AI Startup Radar V0.5 Spec
 
 ## One-Line Goal
 
-Help a user turn daily AI startup noise into a low-friction, evidence-backed, personally relevant HTML startup radar.
+Help a user turn recent AI startup noise into a low-friction, evidence-backed, personally relevant HTML startup radar using verified companies only.
 
 ## User Job
 
-The user wants to know which recent AI startup signals are worth attention, what each company actually does, why it might matter, and what can be learned or adapted for the user's own founder, career, investment, or market-entry goals.
+The user wants to know which AI startup signals from the last 30 days are worth attention, what each verified company actually does, why it might matter, and what can be learned or adapted for the user's own founder, career, investment, or market-entry goals.
 
 ## V0 Scope
 
-- Track recent AI-related startup signals across Silicon Valley, New York, Singapore, and Hong Kong through web research and optional API-backed collection.
-- Explain each selected company in beginner-friendly language.
+- Track AI-related startup signals from the last 30 days across Silicon Valley, New York, Singapore, and Hong Kong through web research and optional API-backed collection.
+- Include only externally verifiable companies in ranked company sections.
+- Explain each selected company in beginner-friendly English.
 - Analyze company type, business, customer, founder/team, strength, potential, risk, and Personal Lens.
 - Score companies with a transparent, quantified rubric and visible dimension breakdown.
 - Produce a daily HTML briefing that can be scanned quickly, opened as a standalone file, or reformatted for push channels.
 - Run compact onboarding when no user profile exists.
 - Provide API source configuration templates and local helper scripts for raw signal collection and normalization.
+- Provide a universal prompt so Claude, Gemini, Manus, ChatGPT, and other capable LLMs can use the workflow.
 
 ## Non-Goals
 
@@ -62,6 +64,8 @@ The V0.3 pipeline supports:
 
 Raw API results are discovery inputs only. They must still be verified, deduplicated, filtered, enriched, scored, and cited before appearing in a briefing.
 
+GitHub-only repositories are project signals, not verified companies. They can appear in a watchlist or "needs verification" section, but not in ranked company cards unless external company/product evidence is found.
+
 ## Output Shape
 
 A normal daily briefing should include:
@@ -74,10 +78,11 @@ A normal daily briefing should include:
 6. Expandable deep-dive sections for business, founder/team, strengths, potential, risks, Personal Lens, and sources
 7. Cross-market patterns and Personal Lens takeaways
 8. Watchlist, next questions, sources, and confidence notes
+9. Verification notes and project signals to verify
 
 ## Quantified Scoring
 
-Every included company must show:
+Every included verified company must show:
 
 - Total score out of 100
 - Rating band
@@ -86,6 +91,7 @@ Every included company must show:
 - Top scoring drivers
 - Main score deductions
 - Evidence gaps or source limitations
+- Verification status and verification sources
 
 The scoring dimensions are defined in `references/scoring_rubric.md`.
 
@@ -118,6 +124,7 @@ Example lens questions:
 - The Personal Lens changes the analysis, instead of being a generic final paragraph.
 - The score is explainable at the dimension level, not just a single number.
 - API-backed collection can run without committing credentials and can skip unavailable sources safely.
+- The workflow can be copied into Claude, Gemini, Manus, or another LLM through `UNIVERSAL_PROMPT.md`.
 
 ## V1 Ideas
 
@@ -128,3 +135,4 @@ Example lens questions:
 - Add weekly pattern review and "startup ideas generated from this week's signals."
 - Add a structured database or spreadsheet export.
 - Add stronger provider-specific enrichers for paid data sources.
+- Add automated company verification/enrichment helpers.
