@@ -32,6 +32,16 @@ Expected output:
 work/raw_signals.json
 ```
 
+Useful commands:
+
+```text
+python3 scripts/fetch_signals.py --dry-run
+python3 scripts/fetch_signals.py
+python3 scripts/fetch_signals.py --allow-insecure-ssl
+```
+
+Use `--allow-insecure-ssl` only as a local testing fallback when macOS/Python certificate setup blocks public HTTPS requests.
+
 Raw signals should include:
 
 - source

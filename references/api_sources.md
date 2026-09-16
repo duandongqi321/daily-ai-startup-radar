@@ -69,6 +69,10 @@ Auth:
 - Usually not required for the public DOC API.
 - Environment variable is left blank by default.
 
+Local note:
+
+- On some macOS Python installations, HTTPS requests can fail with a local certificate error. Fixing local Python certificates is preferred. For one-off local testing only, `scripts/fetch_signals.py --allow-insecure-ssl` can bypass certificate verification.
+
 Official docs: https://www.gdeltproject.org/ and https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
 
 ### Product Hunt

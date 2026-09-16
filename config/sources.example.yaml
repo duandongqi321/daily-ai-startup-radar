@@ -29,6 +29,7 @@ sources:
     provider: "github"
     purpose: "Find open-source AI infra, developer tools, and repo traction."
     auth_env: "GITHUB_TOKEN"
+    requires_auth: false
     max_results: 20
     queries:
       - 'AI agent startup created:>=<since-date>'
@@ -40,6 +41,7 @@ sources:
     provider: "gdelt"
     purpose: "Find recent public news signals across regions."
     auth_env: ""
+    requires_auth: false
     max_results: 25
     queries:
       - '("AI startup" OR "artificial intelligence startup") ("Singapore" OR "Hong Kong" OR "New York" OR "San Francisco")'
@@ -50,6 +52,7 @@ sources:
     provider: "product_hunt"
     purpose: "Find new AI product launches."
     auth_env: "PRODUCTHUNT_TOKEN"
+    requires_auth: true
     max_results: 20
     queries:
       - "AI"
@@ -61,6 +64,7 @@ sources:
     provider: "newsapi"
     purpose: "Find recent secondary news coverage."
     auth_env: "NEWSAPI_KEY"
+    requires_auth: true
     max_results: 25
     queries:
       - '"AI startup" AND (funding OR launch OR partnership)'
@@ -70,6 +74,7 @@ sources:
     provider: "crunchbase"
     purpose: "Enrich company and funding data when a Crunchbase API key is available."
     auth_env: "CRUNCHBASE_API_KEY"
+    requires_auth: true
     max_results: 20
     queries:
       - "AI startup"

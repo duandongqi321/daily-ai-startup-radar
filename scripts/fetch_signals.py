@@ -13,6 +13,7 @@ import json
 import os
 import pathlib
 import re
+import ssl
 import sys
 import urllib.error
 import urllib.parse
@@ -23,6 +24,7 @@ from typing import Any
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "config" / "sources.yaml"
 EXAMPLE_CONFIG = ROOT / "config" / "sources.example.yaml"
+SSL_CONTEXT: ssl.SSLContext | None = None
 
 
 def load_dotenv(path: pathlib.Path) -> None:
@@ -110,9 +112,23 @@ def unquote_yaml_value(value: str) -> str:
     return value
 
 
+def build_ssl_context(allow_insecure_ssl: bool = False) -> ssl.SSLContext | None:
+    if allow_insecure_ssl:
+        return ssl._create_unverified_context()
+    try:
+        import certifi  # type: ignore
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except Exception:
+        return None
+
+
 def request_json(url: str, headers: dict[str, str] | None = None, data: bytes | None = None) -> Any:
     req = urllib.request.Request(url, headers=headers or {}, data=data)
-    with urllib.request.urlopen(req, timeout=30) as response:
+    open_kwargs: dict[str, Any] = {"timeout": 30}
+    if SSL_CONTEXT is not None:
+        open_kwargs["context"] = SSL_CONTEXT
+    with urllib.request.urlopen(req, **open_kwargs) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
@@ -274,7 +290,8 @@ def fetch_source(source: dict[str, Any], lookback_hours: int) -> tuple[list[dict
     if not source.get("enabled", False):
         return [], "disabled"
     auth_env = str(source.get("auth_env") or "")
-    if auth_env and not os.environ.get(auth_env):
+    requires_auth = bool(source.get("requires_auth", bool(auth_env)))
+    if auth_env and requires_auth and not os.environ.get(auth_env):
         return [], f"missing credential {auth_env}"
     provider = source.get("provider")
     try:
@@ -292,13 +309,21 @@ def fetch_source(source: dict[str, Any], lookback_hours: int) -> tuple[list[dict
 
 
 def main() -> int:
+    global SSL_CONTEXT
+
     parser = argparse.ArgumentParser(description="Fetch raw AI startup signals.")
     parser.add_argument("--config", default=str(DEFAULT_CONFIG if DEFAULT_CONFIG.exists() else EXAMPLE_CONFIG))
     parser.add_argument("--out", default=str(ROOT / "work" / "raw_signals.json"))
     parser.add_argument("--lookback-hours", type=int, default=24)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--allow-insecure-ssl",
+        action="store_true",
+        help="Last-resort local testing option for machines with broken Python certificate setup.",
+    )
     args = parser.parse_args()
 
+    SSL_CONTEXT = build_ssl_context(args.allow_insecure_ssl)
     load_dotenv(ROOT / ".env")
     config_path = pathlib.Path(args.config)
     config = parse_simple_sources_yaml(config_path)
