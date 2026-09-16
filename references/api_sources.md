@@ -95,10 +95,16 @@ Useful signals:
 
 - launch date
 - tagline
+- product description
 - topics
 - votes
 - website
 - maker comments when available
+
+Local helper behavior:
+
+- Fetch a broader set of recent launches, then filter by AI, agent, automation, developer-tool, LLM, productivity, RAG, and workflow terms.
+- Treat Product Hunt as a launch-discovery source. A Product Hunt launch can verify that a product page exists, but it should still be enriched with a company website, founder/team source, funding item, customer signal, or other external source before ranking it as a verified company.
 
 Auth:
 

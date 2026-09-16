@@ -34,6 +34,8 @@ AI_TERMS = (
 PRODUCT_TERMS = (
     "platform",
     "product",
+    "tool",
+    "app",
     "saas",
     "enterprise",
     "customer",
@@ -44,6 +46,10 @@ PRODUCT_TERMS = (
     "assistant",
     "dashboard",
     "api",
+    "builder",
+    "extension",
+    "studio",
+    "productivity",
     "production",
     "beta",
     "waitlist",
@@ -106,6 +112,10 @@ REGION_HINTS = {
     "Singapore": ("singapore",),
     "Hong Kong": ("hong kong", "hk "),
 }
+PROVIDER_CANDIDATE_CAPS = {
+    "product_hunt": 10,
+    "github": 8,
+}
 
 
 def slug_text(value: str) -> str:
@@ -166,6 +176,8 @@ def infer_signal_type(provider: str, text: str) -> str:
     lowered = text.lower()
     if provider == "github":
         return "open-source traction"
+    if provider == "product_hunt":
+        return "product launch"
     if "funding" in lowered or "raises" in lowered or "raised" in lowered:
         return "funding"
     if "launch" in lowered or "introduces" in lowered or "announces" in lowered:
@@ -179,7 +191,17 @@ def quality_assessment(signal: dict[str, Any], visible_text: str) -> dict[str, A
     metadata = signal.get("metadata") or {}
     provider = signal.get("provider") or signal.get("source") or "unknown"
     query_text = str(signal.get("query") or "")
-    combined_text = f"{visible_text} {query_text} {' '.join(metadata.get('topics') or [])} {metadata.get('owner') or ''}"
+    combined_text = " ".join(
+        [
+            visible_text,
+            query_text,
+            " ".join(metadata.get("topics") or []),
+            " ".join(metadata.get("topic_slugs") or []),
+            " ".join(metadata.get("matched_keywords") or []),
+            str(metadata.get("description") or ""),
+            str(metadata.get("owner") or ""),
+        ]
+    )
     ai_hits = keyword_hits(visible_text, AI_TERMS)
     query_ai_hits = keyword_hits(query_text, AI_TERMS)
     product_hits = keyword_hits(combined_text, PRODUCT_TERMS)
@@ -224,6 +246,20 @@ def quality_assessment(signal: dict[str, Any], visible_text: str) -> dict[str, A
     if provider in {"gdelt", "newsapi", "product_hunt"}:
         score += 2
         reasons.append(f"Source type is useful for startup discovery: {provider}")
+
+    if provider == "product_hunt":
+        votes = int(metadata.get("votes") or 0)
+        score += 2
+        reasons.append("Product Hunt launch signal with a product page")
+        if votes >= 100:
+            score += 3
+            reasons.append("Product Hunt traction: 100+ votes")
+        elif votes >= 25:
+            score += 2
+            reasons.append("Product Hunt traction: 25+ votes")
+        elif votes >= 5:
+            score += 1
+            reasons.append("Product Hunt traction: 5+ votes")
 
     if provider == "github":
         stars = int(metadata.get("stars") or 0)
@@ -271,7 +307,7 @@ def candidate_from_signal(signal: dict[str, Any]) -> dict[str, Any]:
     provider = signal.get("provider") or signal.get("source") or "unknown"
     metadata = signal.get("metadata") or {}
     topic_text = " ".join(metadata.get("topics") or [])
-    text = f"{title} {snippet} {topic_text}"
+    text = f"{title} {snippet} {topic_text} {metadata.get('description') or ''}"
     url = signal.get("url") or ""
     quality = quality_assessment(signal, text)
     sector = infer_sector(text)
@@ -338,6 +374,10 @@ def dedupe_key(candidate: dict[str, Any]) -> str:
     url = (candidate.get("source_links") or [""])[0]
     parsed = urllib.parse.urlparse(url)
     domain = parsed.netloc.lower().removeprefix("www.")
+    if domain == "producthunt.com":
+        path = parsed.path.strip("/").lower()
+        if path:
+            return f"producthunt.com/{path}"
     if domain == "github.com":
         parts = [part for part in parsed.path.split("/") if part]
         if len(parts) >= 2:
@@ -366,6 +406,23 @@ def should_keep(candidate: dict[str, Any], min_quality_score: int) -> bool:
     return True
 
 
+def select_candidates(candidates: list[dict[str, Any]], max_candidates: int) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    provider_counts: dict[str, int] = {}
+
+    for candidate in candidates:
+        provider = str(candidate.get("provider") or "unknown")
+        cap = PROVIDER_CANDIDATE_CAPS.get(provider)
+        if cap is not None and provider_counts.get(provider, 0) >= cap:
+            continue
+        selected.append(candidate)
+        provider_counts[provider] = provider_counts.get(provider, 0) + 1
+        if len(selected) >= max_candidates:
+            break
+
+    return selected
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Normalize raw signals into candidate signals.")
     parser.add_argument("--in", dest="input_path", default=str(ROOT / "work" / "raw_signals.json"))
@@ -384,7 +441,7 @@ def main() -> int:
     all_candidates = dedupe([candidate_from_signal(signal) for signal in raw_signals])
     candidates = [candidate for candidate in all_candidates if should_keep(candidate, args.min_quality_score)]
     candidates.sort(key=lambda item: item.get("candidate_quality_score", 0), reverse=True)
-    candidates = candidates[: args.max_candidates]
+    candidates = select_candidates(candidates, args.max_candidates)
 
     payload = {
         "normalized_at": dt.datetime.now(dt.timezone.utc).isoformat(),

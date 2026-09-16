@@ -25,6 +25,23 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = ROOT / "config" / "sources.yaml"
 EXAMPLE_CONFIG = ROOT / "config" / "sources.example.yaml"
 SSL_CONTEXT: ssl.SSLContext | None = None
+PRODUCT_HUNT_DEFAULT_KEYWORDS = (
+    "ai",
+    "artificial intelligence",
+    "agent",
+    "agentic",
+    "automation",
+    "chatbot",
+    "copilot",
+    "developer tools",
+    "devtools",
+    "llm",
+    "machine learning",
+    "no-code",
+    "productivity",
+    "rag",
+    "workflow",
+)
 
 
 def load_dotenv(path: pathlib.Path) -> None:
@@ -157,6 +174,19 @@ def expand_query(query: str, lookback_hours: int) -> str:
     return query.replace("<since-date>", date_since(lookback_hours))
 
 
+def keyword_matches(text: str, keywords: list[str] | tuple[str, ...]) -> list[str]:
+    normalized = f" {re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()} "
+    matches = []
+    for keyword in keywords:
+        normalized_keyword = re.sub(r"[^a-z0-9]+", " ", str(keyword).lower()).strip()
+        if not normalized_keyword:
+            continue
+        pattern = rf"(?<![a-z0-9]){re.escape(normalized_keyword)}(?![a-z0-9])"
+        if re.search(pattern, normalized):
+            matches.append(str(keyword))
+    return matches
+
+
 def fetch_github(source: dict[str, Any], lookback_hours: int) -> list[dict[str, Any]]:
     token = os.environ.get(str(source.get("auth_env") or ""))
     headers = {"Accept": "application/vnd.github+json"}
@@ -261,47 +291,105 @@ def fetch_product_hunt(source: dict[str, Any], lookback_hours: int) -> list[dict
     if not token:
         return []
     query = """
-      query FetchPosts($first: Int!, $postedAfter: DateTime) {
-        posts(first: $first, postedAfter: $postedAfter) {
+      query FetchPosts($first: Int!, $after: String, $postedAfter: DateTime) {
+        posts(first: $first, after: $after, postedAfter: $postedAfter) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
           edges {
             node {
               name
               tagline
+              description
               url
               website
               createdAt
               votesCount
+              topics {
+                edges {
+                  node {
+                    name
+                    slug
+                  }
+                }
+              }
             }
           }
         }
       }
     """
-    payload = json.dumps(
-        {"query": query, "variables": {"first": int(source.get("max_results", 20)), "postedAfter": iso_since(lookback_hours)}}
-    ).encode("utf-8")
-    data = request_json(
-        "https://api.producthunt.com/v2/api/graphql",
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        data=payload,
-    )
+    max_results = int(source.get("max_results", 100))
+    keywords = [str(query) for query in source.get("queries", [])] or list(PRODUCT_HUNT_DEFAULT_KEYWORDS)
     signals = []
-    for edge in (((data.get("data") or {}).get("posts") or {}).get("edges") or []):
-        node = edge.get("node") or {}
-        text = f"{node.get('name', '')} {node.get('tagline', '')}".lower()
-        if source.get("queries") and not any(str(q).lower() in text for q in source.get("queries", [])):
-            continue
-        signals.append(
-            {
-                "source": source["name"],
-                "provider": "product_hunt",
-                "query": ",".join(source.get("queries", [])),
-                "title": node.get("name"),
-                "url": node.get("website") or node.get("url"),
-                "published_at": node.get("createdAt"),
-                "snippet": node.get("tagline") or "",
-                "metadata": {"product_hunt_url": node.get("url"), "votes": node.get("votesCount")},
-            }
+    fetched = 0
+    after: str | None = None
+    posted_after = iso_since(lookback_hours)
+
+    while fetched < max_results:
+        first = min(20, max_results - fetched)
+        payload = json.dumps(
+            {"query": query, "variables": {"first": first, "after": after, "postedAfter": posted_after}}
+        ).encode("utf-8")
+        data = request_json(
+            "https://api.producthunt.com/v2/api/graphql",
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            data=payload,
         )
+        if data.get("errors"):
+            message = "; ".join(str(error.get("message") or error) for error in data.get("errors", []))
+            raise RuntimeError(f"Product Hunt GraphQL error: {message}")
+
+        posts = (data.get("data") or {}).get("posts") or {}
+        edges = posts.get("edges") or []
+        page_info = posts.get("pageInfo") or {}
+        fetched += len(edges)
+
+        for edge in edges:
+            node = edge.get("node") or {}
+            topic_edges = (((node.get("topics") or {}).get("edges")) or [])
+            topic_names = [str(((edge.get("node") or {}).get("name")) or "") for edge in topic_edges]
+            topic_slugs = [str(((edge.get("node") or {}).get("slug")) or "") for edge in topic_edges]
+            text = " ".join(
+                [
+                    str(node.get("name") or ""),
+                    str(node.get("tagline") or ""),
+                    str(node.get("description") or ""),
+                    " ".join(topic_names),
+                    " ".join(topic_slugs),
+                ]
+            )
+            matches = keyword_matches(text, keywords)
+            if not matches:
+                continue
+            tagline = str(node.get("tagline") or "").strip()
+            description = str(node.get("description") or "").strip()
+            snippet = tagline or description
+            signals.append(
+                {
+                    "source": source["name"],
+                    "provider": "product_hunt",
+                    "query": ",".join(matches[:6]),
+                    "title": node.get("name"),
+                    "url": node.get("website") or node.get("url"),
+                    "published_at": node.get("createdAt"),
+                    "snippet": snippet,
+                    "metadata": {
+                        "description": description,
+                        "matched_keywords": matches,
+                        "product_hunt_url": node.get("url"),
+                        "topics": [topic for topic in topic_names if topic],
+                        "topic_slugs": [slug for slug in topic_slugs if slug],
+                        "votes": node.get("votesCount"),
+                        "website": node.get("website"),
+                    },
+                }
+            )
+
+        if not page_info.get("hasNextPage") or not page_info.get("endCursor") or not edges:
+            break
+        after = str(page_info.get("endCursor"))
+
     return signals
 
 
@@ -323,7 +411,7 @@ def fetch_source(source: dict[str, Any], lookback_hours: int) -> tuple[list[dict
         if provider == "product_hunt":
             return fetch_product_hunt(source, lookback_hours), None
         return [], f"provider {provider} is not implemented in this local helper"
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, json.JSONDecodeError) as exc:
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, json.JSONDecodeError, RuntimeError) as exc:
         return [], f"{type(exc).__name__}: {exc}"
 
 

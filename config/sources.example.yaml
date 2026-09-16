@@ -62,11 +62,22 @@ sources:
     purpose: "Find new AI product launches."
     auth_env: "PRODUCTHUNT_TOKEN"
     requires_auth: true
-    max_results: 20
+    max_results: 100
     queries:
       - "AI"
+      - "artificial intelligence"
       - "agent"
+      - "automation"
+      - "chatbot"
+      - "copilot"
       - "developer tools"
+      - "devtools"
+      - "LLM"
+      - "machine learning"
+      - "no-code"
+      - "productivity"
+      - "RAG"
+      - "workflow"
 
   - name: "newsapi"
     enabled: false
